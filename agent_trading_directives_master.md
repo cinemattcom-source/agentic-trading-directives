@@ -2,8 +2,8 @@
 
 **Account:** Robinhood agentic account, ••5748
 **Owner:** Matt
-**Version:** 3.2 — July 1, 2026
-**Supersedes:** `trading_mandate.md`, `trading_event_catalys.md`, agentic file, `agent_trading_directives_master.md` v2.0, `consolidated_trading.md` v1.0
+**Version:** 3.5 — July 2, 2026
+**Supersedes:** `trading_mandate.md`, `trading_event_catalys.md`, agentic file, `agent_trading_directives_master.md` v2.0/v3.1/v3.2, `consolidated_trading.md` v1.0
 **Status:** This is now the single top-level reference. Section 1 (catalyst engine) and Section 2 (universe/ranking) are standalone files this document indexes — if either conflicts with this file, STOP and flag it to Matt rather than picking one.
 
 > **UNRESOLVED — read before relying on this file for options logic:** Prior versions (through consolidated_trading.md v1.0) stated ••5748 supports single-leg options (Standing Rule, formerly 0.7). Matt has since been told Robinhood agentic accounts are restricted to listed equities/ETFs only — no options, no crypto — regardless of account-level options authorization. Until confirmed directly with Robinhood or via account settings screenshot, **this directive treats options as UNAVAILABLE to autonomous execution on ••5748.** Any options logic in older files (single-leg call substitution, etc.) is void for the autonomous agent. A manual single-leg option may still be placed by Matt himself on ••1155, which has Level 3.
@@ -30,7 +30,7 @@
 
 **Capital:** Pull live from the account before relying on any figure — do not use $300/$500 from prior sessions; those are stale (tied to the pre-Edmonton-trip period and the now-resolved MU earnings reserve). Current deposit cadence going forward: ~$350/month post-July 1.
 
-**Objective:** Directional target of 30–40% ROI by December 2026, carried forward as context, not a mandate to force trades — see Section 9 benchmark note (capital preservation over benchmark-chasing).
+**Objective:** Per-trade ROI targets on agentic-account share positions — **30–40% minimum** acceptable target, **80–100% upper/maximum** target; scale out into the band rather than exiting all at once (full mechanics in `catalyst_engine_directive.md` Section 3). Paired with a **15% stop** for a minimum reward:risk of roughly 2:1 to 2.7:1. These are targets, not a mandate to force trades or chase — capital preservation takes priority over hitting a number.
 
 **Standing Rules (apply in all phases, override everything else):**
 
@@ -42,19 +42,20 @@
 6. **Verify before acting.** Confirm current positions, settled cash, and open orders directly from the account before every order. Never act on remembered or assumed state.
 7. **Autonomous execution is shares-only.** No options of any kind placed by the agent on ••5748 — see the unresolved options note above. [Revised v3.2 — was "single-leg options authorized" through v2.0/consolidated v1.0; now void pending confirmation.]
 8. **Confirm all orders** via the review/simulation step before live execution.
-9. **Autonomous-eligible vs. manual-only split** [Added today, July 1]: MU, INTC, NBIS, and AMD are autonomous-eligible — the engine may execute these per Section 1/2 rules once Phase G is live. WDC, MRVL, STX, and SNDK are **manual-only** due to liquidity concerns — the agent may monitor and rank them under Phase R, but any entry requires Matt to place the trade himself.
-10. **Weekly pre-approval (Sunday-lock model)** [Added today, July 1]: Matt reviews and locks the week's catalyst-trade list every Sunday. The engine executes only that locked list during the week, including Matt's Wed–Fri work blackout. The engine is a plan executor only — it cannot originate new trades, resize a locked position, or re-trigger a rejected entry outside the Sunday review.
+9. **Autonomous-eligible vs. manual-only split** [Added July 1]: MU, INTC, NBIS, and AMD are autonomous-eligible — the engine may execute these per Section 1/2 rules once Phase G is live. WDC, MRVL, STX, and SNDK are **manual-only** due to liquidity concerns — the agent may monitor and rank them under Phase R, but any entry requires Matt to place the trade himself.
+10. **Weekly pre-approval (Sunday-lock model)** [Added July 1; extended v3.3]: Matt reviews and locks the week's catalyst-trade list every Sunday. The engine executes only that locked list during the week, including Matt's Wed–Fri work blackout. The engine is a plan executor only — it cannot originate new trades, resize a locked position, or re-trigger a rejected entry outside the Sunday review. **Exception (v3.3 — opportunistic approval):** if Matt becomes reachable intraday on a blackout day, the engine may push a locked-list-consistent suggestion for live one-tap approval with a 15-minute response deadline; on timeout it expires and does nothing. Silence never executes a trade. Full mechanics in `catalyst_engine_directive.md` Section 1a.
 
 ---
 
 ## 1. Catalyst Engine (standalone: `catalyst_engine_directive.md`)
 
-Schedule-aware execution layer. Replaces the retired MU-specific catalyst mandate (that mandate's June 24/25 earnings event has fully resolved — MU beat sharply, see Section 9) with a general engine that applies the same logic to any dated catalyst across the autonomous-eligible universe. Governs: entry/exit mechanics, fractional-share order handling, and the Wed–Fri blackout schedule. See that file for full detail — this index entry is not a substitute.
+Schedule-aware execution layer. Replaces the retired MU-specific catalyst mandate (that mandate's June 24/25 earnings event has fully resolved — MU beat sharply, see Section 9) with a general engine that applies the same logic to any dated catalyst across the autonomous-eligible universe. Governs: entry/exit mechanics, fractional-share order handling, the Wed–Fri blackout schedule, and the opportunistic approval window. See that file for full detail — this index entry is not a substitute.
 
-Key mechanics that file must encode (confirmed today, not yet reflected in any saved file):
+Key mechanics that file must encode:
 - **Default instrument: fractional equity shares, marketable limit order** (set ~1.5% past current price), not a naked market order.
 - Fractional limit orders unfilled after ~5 minutes auto-cancel on Robinhood — the engine must handle that gracefully, not treat it as an error.
 - Stop orders queue to the next regular open rather than running in extended/overnight hours.
+- Opportunistic intraday approval carries a 15-minute deadline and defaults to no-action on timeout (Section 1a).
 
 ---
 
@@ -70,7 +71,7 @@ See that file for the full ranking mechanics (52-week-high filter → relative v
 
 ## 3. Intraday Expansion Framework — RETIRED
 
-Formally retired as of today's session (July 1, 2026), superseding its prior "ON HOLD" status. Reasoning: pattern-reliability discussion concluded intraday day-trading isn't worth pursuing for this account. If Matt wants to revisit this later, it requires a fresh directive and its own capital allocation — this section is not being reactivated by implication.
+Formally retired as of the July 1, 2026 session, superseding its prior "ON HOLD" status. Reasoning: pattern-reliability discussion concluded intraday day-trading isn't worth pursuing for this account. If Matt wants to revisit this later, it requires a fresh directive and its own capital allocation — this section is not being reactivated by implication.
 
 ---
 
@@ -95,4 +96,7 @@ Formally retired as of today's session (July 1, 2026), superseding its prior "ON
 
 ## Changelog from prior versions
 
+- **v3.4 → v3.5:** Set the stop at 15% (from 10%). Minimum reward:risk now ~2:1–2.7:1.
+- **v3.3 → v3.4:** Set explicit per-trade profit targets (30–40% minimum, 80–100% upper) and tightened the stop from the stale 40% options carryover in the Objective and `catalyst_engine_directive.md` Section 3.
+- **v3.2 → v3.3:** Extended Standing Rule 0.10 with the opportunistic intraday approval window (15-minute deadline, defaults to no-action on timeout) so it does not conflict with `catalyst_engine_directive.md` Section 1a. No other changes; v3.2 content preserved.
 - **v2.0 → v3.2:** Added ••7930 to Standing Rules (was missing). Retracted single-leg options authorization pending Robinhood confirmation (was: authorized). Added autonomous-eligible/manual-only ticker split (MU/INTC/NBIS/AMD vs. WDC/MRVL/STX/SNDK). Added Sunday pre-approval/lock execution model for Wed–Fri blackout. Formally retired Section 3 (was ON HOLD). Retired MU-specific catalyst mandate in favor of general catalyst engine (event resolved). Reconfirmed NO MARGIN after explicit pros/cons review. Removed stale capital figures ($300/$500) in favor of "pull live" instruction. Removed "account owner returns June 29" and other Edmonton-trip-specific scheduling, now stale.

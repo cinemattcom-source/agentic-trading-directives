@@ -3,8 +3,8 @@
 **Parent document:** agent_trading_directives_master.md (Section 1)
 **Account:** Robinhood agentic account, ••5748
 **Owner:** Matt
-**Version:** 1.1 — July 1, 2026
-**Status:** New file — did not previously exist on GitHub or the mini PC despite being referenced. This is its first save.
+**Version:** 1.4 — July 2, 2026 (v1.2 merged the opportunistic approval window + 15-min timeout into v1.1; v1.3 set profit targets; v1.4 sets the stop at 15%. All v1.1 content — calendar, macro monitoring, session protocol — preserved)
+**Status:** Active reference for the execution layer. Simulation-gated per master Section 5.
 
 ## 0. Purpose
 
@@ -21,6 +21,15 @@ Matt works six-day weeks, ten-hour shifts, starting July 1, 2026. Full-session p
 
 This moves the human decision point earlier (Sunday) instead of removing it.
 
+### 1a. Opportunistic Approval Window [added v1.2]
+
+The blackout schedule is a *floor of unavailability, not a ceiling.* If Matt becomes reachable intraday on a blackout day — sent home early, on break with phone access, etc. — the engine may treat him as available for that window and push a trade suggestion for live one-tap approval. This does not change the Sunday-locked list or grant the engine new authority; it only lets Matt opt *in* to a live decision he'd otherwise miss. Two firm rules govern it:
+
+- **A suggested trade pushed for approval carries a response deadline of 15 minutes** (or tighter if the catalyst is unusually time-sensitive).
+- **On timeout — no response within the window — the request EXPIRES and the engine does nothing.** No position opens. Ignoring the notification is a valid, safe response: silence means "don't." The engine never fires a trade Matt didn't actively approve. A timeout is logged so Matt can see it happened, but nothing executes. Losing an unapproved trade is acceptable; taking an unseen one is not. **This is a hard safety inversion and is not overridable by any convenience setting.**
+
+Notifications the engine may push whenever Matt appears reachable (any day) are informational and never require a response: end-of-day/intraday log summary, account value and open-position status, stop-loss proximity alerts, and newly-surfaced catalysts or news not on the tracked calendar.
+
 ## 2. Entry Mechanics
 
 - **Instrument: fractional equity shares only.** No options — see master Section 0.7/unresolved-options note.
@@ -30,10 +39,15 @@ This moves the human decision point earlier (Sunday) instead of removing it.
   - A fractional limit order unfilled after ~5 minutes auto-cancels. If this happens mid-blackout with no re-trigger authorized on the locked list, the engine logs it and stands down — it does not chase the fill with a new order.
   - Stop orders queue to the next regular-hours open; they do not execute in extended hours even if triggered after-hours.
 
-## 3. Exit Rules (carried forward, unchanged in substance)
+## 3. Exit Rules
 
-- Take profit at 75% of the position's maximum expected gain.
-- Stop loss at 40% of entry value.
+**Profit targets (per trade, shares in the agentic account):**
+- **Minimum acceptable target: 30–40% ROI** on the position. Below this band, a setup generally isn't worth the risk given the 10% stop.
+- **Upper target: 80–100% ROI** — scale out / take profit as a position runs into this band; don't round-trip a large gain waiting for more.
+- These are targets to exit *into* when reached, not guarantees every trade achieves them. Scale out across the band rather than all-or-nothing at one price.
+
+**Stop loss: 15% of entry value.** [Set v1.4 — tightened from the 40% carried over from the original options-based mandate, which was far too wide for a shares-only account.] Paired with the 30–40% minimum profit target, this gives a minimum reward:risk of roughly 2:1 to 2.7:1.
+
 - No averaging down without a new, confirmed catalyst.
 - Never carry a full position through an earnings print uncovered — trim ahead of the print; hold a partial position only if the thesis is still intact going in.
 - No same-name re-entry the same week after a stop-out.
@@ -116,7 +130,7 @@ Every session open:
 2. Quote live prices for the autonomous-eligible universe (MU, INTC, NBIS, AMD) plus anything on the current Sunday-locked list.
 3. Sweep for breaking macro/geopolitical/sector news.
 4. Deliver a situational briefing.
-5. Compare against the locked weekly plan — execute only what's on it, during blackout days, per Section 1.
+5. Compare against the locked weekly plan — execute only what's on it, during blackout days, per Section 1. Honor any live opportunistic approval per Section 1a.
 
 Current market data overrides stale calendar assumptions. When they conflict, surface the conflict, follow the data, and explain the deviation — don't silently resolve it.
 
