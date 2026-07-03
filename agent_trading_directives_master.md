@@ -2,7 +2,7 @@
 
 **Account:** Robinhood agentic account, ••5748
 **Owner:** Matt
-**Version:** 3.5 — July 2, 2026
+**Version:** 3.6 — July 3, 2026
 **Supersedes:** `trading_mandate.md`, `trading_event_catalys.md`, agentic file, `agent_trading_directives_master.md` v2.0/v3.1/v3.2, `consolidated_trading.md` v1.0
 **Status:** This is now the single top-level reference. Section 1 (catalyst engine) and Section 2 (universe/ranking) are standalone files this document indexes — if either conflicts with this file, STOP and flag it to Matt rather than picking one.
 
@@ -81,7 +81,9 @@ Formally retired as of the July 1, 2026 session, superseding its prior "ON HOLD"
 
 **End of session:** trades taken, rules triggered (stops, halts), running P&L, anything requiring a halt. "No action, monitoring only" is a valid entry for Phase R days.
 
-**Weekly:** Matt reviews the log every Sunday alongside the pre-approval lock (Section 0.10) before any capital additions or parameter discussions.
+**Log file location & format [set v3.6 — fixes prior branch-scatter]:** The routine writes each day's log to its **own dated file at `logs/YYYY-MM-DD.md`** (e.g. `logs/2026-07-03.md`) committed **directly to the `main` branch**. It must NOT create a new working branch per run, and must NOT overwrite prior days' files — each day is a separate, permanent file in the `logs/` folder on `main`. Rationale: this keeps every log in one predictable place readable from Matt's phone (GitHub app, `main` branch, `logs/` folder) during his Wed–Sat blackout, and a `git pull` on the mini PC mirrors them all locally for offline/home access and backup. One file per day, on main, always.
+
+**Weekly:** Matt reviews the logs every Sunday alongside the pre-approval lock (Section 0.10) before any capital additions or parameter discussions.
 
 ---
 
@@ -96,6 +98,7 @@ Formally retired as of the July 1, 2026 session, superseding its prior "ON HOLD"
 
 ## Changelog from prior versions
 
+- **v3.5 → v3.6:** Fixed log storage — routine now writes one dated file per day (`logs/YYYY-MM-DD.md`) directly to `main`, instead of scattering logs across a new working branch each run. Makes logs readable from phone (one location on main) and mirrored locally via `git pull`.
 - **v3.4 → v3.5:** Set the stop at 15% (from 10%). Minimum reward:risk now ~2:1–2.7:1.
 - **v3.3 → v3.4:** Set explicit per-trade profit targets (30–40% minimum, 80–100% upper) and tightened the stop from the stale 40% options carryover in the Objective and `catalyst_engine_directive.md` Section 3.
 - **v3.2 → v3.3:** Extended Standing Rule 0.10 with the opportunistic intraday approval window (15-minute deadline, defaults to no-action on timeout) so it does not conflict with `catalyst_engine_directive.md` Section 1a. No other changes; v3.2 content preserved.
