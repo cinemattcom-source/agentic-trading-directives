@@ -65,15 +65,16 @@ Notifications the engine may push whenever Matt appears reachable (any day) are 
 | Date | Event | Trading Action |
 |---|---|---|
 | Jul 3 | Jobs Report | Monitor macro |
-| Jul 29–30 | Fed Meeting | Dovish/rate cut = add to semiconductor positions |
+| Jul 23 | INTC Q2 earnings (confirmed via press release) | No autonomous-eligible position held as of Jul 9; monitor for post-earnings entry per Sunday-lock process |
+| Jul 29–30 | Fed Meeting | Dovish/rate cut = add to semiconductor positions. **Flag (Jul 9 update):** officials have signaled leaning toward one more hike this year on persistent inflation — more hawkish than this row's standing assumption. Re-verify Fed posture closer to the date before acting on the dovish case. |
 | Mid-July | AMD earnings setup watch | Begin building toward August earnings window |
 
 ### AUGUST 2026
 | Date | Event | Trading Action |
 |---|---|---|
+| Aug 4 | AMD Q2 earnings (confirmed after close, was "~Aug 3 verify") | Exit 80% before print; hold 20% if thesis intact |
 | Aug 7 | Jobs Report | Monitor macro |
-| ~Aug 3 | AMD earnings (verify date) | Exit 80% before print; hold 20% if thesis intact |
-| Late Aug | MRVL earnings (verify date) | Manual-only per Section 0.9 — Phase R monitoring, Matt places any trade |
+| Late Aug | MRVL earnings (still unverified — no confirmed date found as of Jul 9) | Manual-only per Section 0.9 — Phase R monitoring, Matt places any trade |
 
 ### SEPTEMBER 2026
 | Date | Event | Trading Action |
