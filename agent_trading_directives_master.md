@@ -2,7 +2,7 @@
 
 **Account:** Robinhood agentic account, ••5748
 **Owner:** Matt
-**Version:** 3.6 — July 3, 2026
+**Version:** 3.7 — July 3, 2026
 **Supersedes:** `trading_mandate.md`, `trading_event_catalys.md`, agentic file, `agent_trading_directives_master.md` v2.0/v3.1/v3.2, `consolidated_trading.md` v1.0
 **Status:** This is now the single top-level reference. Section 1 (catalyst engine) and Section 2 (universe/ranking) are standalone files this document indexes — if either conflicts with this file, STOP and flag it to Matt rather than picking one.
 
@@ -15,7 +15,8 @@
 0. Account Identity & Standing Rules — always on, override everything else
 1. Catalyst Engine — standalone file `catalyst_engine_directive.md` (execution layer)
 2. Equity Consolidation & Universe — standalone file `equity_consolidation_directive.md` (Stage A ranking)
-3. Intraday Expansion Framework — **RETIRED**
+3. Intraday Expansion Framework — standalone file: `intraday_limit_directive.md`
+
 4. Logging & Review — always on
 5. Scaling Protocol — always on
 
@@ -69,9 +70,21 @@ See that file for the full ranking mechanics (52-week-high filter → relative v
 
 ---
 
-## 3. Intraday Expansion Framework — RETIRED
+## 3. Intraday Expansion Framework — standalone file: `intraday_limit_directive.md`
 
-Formally retired as of the July 1, 2026 session, superseding its prior "ON HOLD" status. Reasoning: pattern-reliability discussion concluded intraday day-trading isn't worth pursuing for this account. If Matt wants to revisit this later, it requires a fresh directive and its own capital allocation — this section is not being reactivated by implication.
+Formerly retired as of the July 1, 2026 session ("pattern-reliability discussion 
+concluded intraday day-trading isn't yet worth pursuing for this account"). Reopened 
+July 14, 2026 per that section's own reopen condition — a fresh directive with 
+its own capital allocation. `intraday_limit_directive.md` v1.1 satisfies both: 
+ATR-adaptive dip-buy/spike-sell logic, sized against the week's Sunday-locked 
+allocation only, backtested against 1yr daily + 1mo 5-min real data (2026-07-14).
+
+**Status: backtested, not yet live.** ••5748 has no deployable capital until 
+refunding (~August 2026). Activation requires: (1) confirm this file is 
+current on `main`, (2) first Sunday after refunding, lock initial symbol list, 
+confirm routine picks up the ATR recompute step in pre-open sequence. See that 
+file for full trigger formula, authorization model, and cash-account settlement 
+constraint.
 
 ---
 
